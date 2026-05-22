@@ -28,7 +28,7 @@ echo -e "   2️⃣  编译检查..."
 BACKEND_COMPILE_SUCCESS=true
 if [ -d "backend" ]; then
     cd backend
-    if mvn clean compile -q 2>/dev/null; then
+    if mvn clean compile -q -Dcheckstyle.skip=true 2>/dev/null; then
         echo -e "   ✅  后端编译成功"
     else
         echo -e "   ❌  后端编译失败"

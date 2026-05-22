@@ -59,14 +59,14 @@ while [ $ATTEMPT -le $MAX_RETRIES ]; do
     echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
     echo -e "${GREEN}▶  Skill 04: 单元测试 (第${ATTEMPT}次)${NC}"
 
-    if ./harness/scripts/skill-04-unit-tests.sh "$TASK_ID"; then
+    if ./.harness/scripts/skill-04-unit-tests.sh "$TASK_ID"; then
         echo -e "${GREEN}✅  单元测试通过${NC}"
         break
     else
         echo -e "${RED}✗  单元测试失败${NC}"
         if [ $ATTEMPT -lt $MAX_RETRIES ]; then
             echo -e "${YELLOW}🔄  触发编码Skill自动修复...${NC}"
-            ./harness/scripts/skill-02-implementation.sh "$TASK_ID" --fix
+            ./.harness/scripts/skill-02-implementation.sh "$TASK_ID" --fix
             ATTEMPT=$((ATTEMPT + 1))
         else
             echo -e "${RED}❌  已达最大重试次数，流程终止${NC}"

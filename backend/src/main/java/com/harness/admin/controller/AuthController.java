@@ -4,7 +4,7 @@ import com.harness.admin.dto.ApiResponse;
 import com.harness.admin.dto.LoginRequest;
 import com.harness.admin.dto.LoginResponse;
 import com.harness.admin.service.UserService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,6 +1,6 @@
 package com.harness.admin.util;
 
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +8,7 @@ import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import javax.crypto.Cipher;
 
 @Component
 @Data
