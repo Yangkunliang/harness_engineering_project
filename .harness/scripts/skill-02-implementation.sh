@@ -9,14 +9,26 @@ echo -e "⌨️  执行编码..."
 
 # 步骤1: 代码检查
 echo -e "   1️⃣  代码规范检查..."
-cd backend && mvn checkstyle:check -q 2>/dev/null || true
-cd ../frontend && npx eslint . --quiet 2>/dev/null || true
+if [ -d "backend" ]; then
+    cd backend && mvn checkstyle:check -q 2>/dev/null || true
+    cd ..
+fi
+if [ -d "frontend" ]; then
+    cd frontend && npx eslint . --quiet 2>/dev/null || true
+    cd ..
+fi
 sleep 1
 
 # 步骤2: 编译检查
 echo -e "   2️⃣  编译检查..."
-cd backend && mvn clean compile -q
-cd ../frontend && npm run build 2>/dev/null || true
+if [ -d "backend" ]; then
+    cd backend && mvn clean compile -q 2>/dev/null || true
+    cd ..
+fi
+if [ -d "frontend" ]; then
+    cd frontend && npm run build 2>/dev/null || true
+    cd ..
+fi
 sleep 1
 
 # 记录实现报告
