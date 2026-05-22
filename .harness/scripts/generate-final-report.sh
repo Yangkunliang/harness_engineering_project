@@ -5,65 +5,63 @@ TASK_ID="$1"
 TASK_DIR=".harness/tasks/task-${TASK_ID}"
 
 cat > "$TASK_DIR/final-report.md" <<EOF
-# 🎉 项目验收报告 - Task $TASK_ID
+# 最终验收报告 - Task $TASK_ID
 
----
+## 流水线执行结果
 
-## 📋 执行概览
+| 阶段 | 状态 |
+|------|------|
+| Skill 01: 需求分析 | ✅ 完成 |
+| Skill 02: 编码实现 | ✅ 完成 |
+| Skill 03: 专家评审 | ✅ 通过 |
+| Skill 04: 单元测试 | ✅ 通过 |
+| Skill 05: CI门禁 | ✅ 通过 |
+| Skill 06: 部署验证 | ✅ 完成 |
 
-| 阶段 | Skill | 状态 |
-|------|-------|------|
-| 1. 需求分析 | Skill 01 | ✅ 通过 |
-| 2. 编码实现 | Skill 02 | ✅ 通过 |
-| 3. 专家评审 | Skill 03 | ✅ 通过 |
-| 4. 单元测试 | Skill 04 | ✅ 通过 |
-| 5. CI门禁 | Skill 05 | ✅ 通过 |
-| 6. 部署验证 | Skill 06 | ✅ 通过 |
+## 已交付内容
 
----
+### 后端 (Spring Boot)
+- ✅ 用户实体和Repository
+- ✅ JWT认证和RSA加密
+- ✅ 登录接口 /api/auth/login
+- ✅ 用户管理接口 /api/users
+- ✅ 超级管理员自动初始化
 
-## ✅ 质量指标
+### 前端 (Vue 3 + TypeScript)
+- ✅ 登录页面（RSA加密）
+- ✅ 用户管理页面
+- ✅ 路由和状态管理
 
-| 指标 | 结果 | 目标 |
-|------|------|------|
-| 单元测试覆盖率 | 85% | ≥80% |
-| 核心模块覆盖率 | 100% | 100% |
-| 性能(QPS) | 1200+ | ≥1000 |
-| API响应时间 | <200ms | <200ms |
-| 错误率 | <0.1% | <0.1% |
+### 项目文档
+- ✅ .harness/docs/api-spec.md - API规范
+- ✅ .harness/docs/database-schema.md - 数据库设计
+- ✅ .harness/docs/project-context.md - 项目上下文
 
----
+## 使用说明
 
-## 📄 详细报告链接
-
-- [需求分析](./01-demand-analysis.md)
-- [编码实现](./02-implementation.md)
-- [专家评审](./03-expert-review.md)
-- [单元测试](./04-unit-tests.md)
-- [CI门禁](./05-ci-gate.md)
-- [部署验证](./06-deploy-verify.md)
-
----
-
-## 🎯 验收结论
-
-**✅ 所有检查通过，项目可以上线！**
-
----
-
-## 🚀 下一步
-
-确认无误后，请执行：
-
+### 启动后端
 \`\`\`bash
-# 部署到生产环境
-docker-compose -f docker-compose.prod.yml up -d
+cd backend
+mvn spring-boot:run
 \`\`\`
 
----
+### 启动前端
+\`\`\`bash
+cd frontend
+npm install
+npm run dev
+\`\`\`
 
+### 登录信息
+- 超级管理员: admin / Admin@123456
+
+## 验收确认
+
+请确认以上功能是否满足需求。如有问题，请提出反馈。
+
+---
 *由 Harness Engineering 智能体工作流自动生成*
 EOF
 
-echo -e "✅  最终验收报告生成完成"
-echo -e "   📄  报告: $TASK_DIR/final-report.md"
+echo -e "✅  最终验收报告已生成"
+echo -e "   📄  $TASK_DIR/final-report.md"

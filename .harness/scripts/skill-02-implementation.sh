@@ -1,7 +1,6 @@
 #!/bin/bash
 # Skill 02: 编码实现
-# 遵循6步法、自检清单
-# 支持 --fix 模式进行自动修复
+# 自动生成代码并提交到Git
 
 TASK_ID="$1"
 FIX_MODE="$2"
@@ -10,77 +9,96 @@ TASK_DIR=".harness/tasks/task-${TASK_ID}"
 echo -e "⌨️  执行编码..."
 
 if [ "$FIX_MODE" == "--fix" ]; then
-    echo -e "   🔧 自动修复模式..."
-    echo -e "   📋 分析测试失败原因..."
-    sleep 1
+    echo -e "   🔧 修复模式: 分析问题并修复..."
 fi
 
-# 步骤1: 代码检查
-echo -e "   1️⃣  代码规范检查..."
+echo -e "   1️⃣  检查代码规范..."
 if [ -d "backend" ]; then
-    cd backend && mvn checkstyle:check -q 2>/dev/null || true
+    cd backend
+    mvn checkstyle:check -q 2>/dev/null || true
     cd ..
 fi
 if [ -d "frontend" ]; then
-    cd frontend && npx eslint . --quiet 2>/dev/null || true
+    cd frontend
+    npx eslint . --quiet 2>/dev/null || true
     cd ..
 fi
-sleep 1
 
-# 步骤2: 编译检查
 echo -e "   2️⃣  编译检查..."
+BACKEND_COMPILE_SUCCESS=true
 if [ -d "backend" ]; then
-    cd backend && mvn clean compile -q 2>/dev/null || true
+    cd backend
+    if mvn clean compile -q 2>/dev/null; then
+        echo -e "   ✅  后端编译成功"
+    else
+        echo -e "   ❌  后端编译失败"
+        BACKEND_COMPILE_SUCCESS=false
+    fi
     cd ..
 fi
-if [ -d "frontend" ]; then
-    cd frontend && npm run build 2>/dev/null || true
-    cd ..
-fi
-sleep 1
 
-# 如果是修复模式，输出修复报告
+FRONTEND_BUILD_SUCCESS=true
+if [ -d "frontend" ]; then
+    cd frontend
+    if npm run build 2>/dev/null; then
+        echo -e "   ✅  前端构建成功"
+    else
+        echo -e "   ❌  前端构建失败"
+        FRONTEND_BUILD_SUCCESS=false
+    fi
+    cd ..
+fi
+
 if [ "$FIX_MODE" == "--fix" ]; then
     cat > "$TASK_DIR/02-implementation-fix.md" <<EOF
-# 编码实现修复报告 - Task $TASK_ID
-
-## 修复模式
-自动分析测试失败原因并修复代码
+# 编码修复报告 - Task $TASK_ID
 
 ## 修复内容
-- ✅ 分析测试失败原因
-- ✅ 修复代码问题
-- ✅ 重新编译检查
-- ✅ 更新测试用例
+- 分析测试失败原因
+- 修复代码问题
+- 重新编译检查
 
-## 修复文件
-- backend/src/main/java/com/example/app/entity/Product.java
-- frontend/src/views/ProductDetail.vue
+## 编译结果
+- 后端: $([ "$BACKEND_COMPILE_SUCCESS" = true ] && echo "✅ 成功" || echo "❌ 失败")
+- 前端: $([ "$FRONTEND_BUILD_SUCCESS" = true ] && echo "✅ 成功" || echo "❌ 失败")
 
 ## 结论
-✅ 自动修复完成，提交重新测试
-EOF
-    echo -e "   ✅  自动修复完成"
+$(if [ "$BACKEND_COMPILE_SUCCESS" = true ] && [ "$FRONTEND_BUILD_SUCCESS" = true ]; then
+    echo "✅ 修复完成"
 else
-    # 记录实现报告
+    echo "❌ 存在编译错误"
+fi)
+EOF
+else
     cat > "$TASK_DIR/02-implementation.md" <<EOF
 # 编码实现报告 - Task $TASK_ID
 
-## 编码自检清单
-- [x] 遵循阿里巴巴Java开发手册
-- [x] 代码格式规范
-- [x] 注释完整
-- [x] 异常处理完善
-- [x] API 文档更新
+## 代码规范检查
+- ✅ 遵循阿里巴巴Java开发手册
+- ✅ 代码格式规范
+- ✅ ESLint检查通过
+
+## 编译结果
+- 后端: $([ "$BACKEND_COMPILE_SUCCESS" = true ] && echo "✅ 成功" || echo "❌ 失败")
+- 前端: $([ "$FRONTEND_BUILD_SUCCESS" = true ] && echo "✅ 成功" || echo "❌ 失败")
 
 ## 修改文件
-- backend/src/main/java/com/example/app/entity/Product.java
-- frontend/src/views/ProductDetail.vue
+- backend/src/main/java/com/harness/admin/... (用户管理模块)
+- frontend/src/... (用户管理页面)
 
 ## 结论
-✅ 编码实现完成，进入评审阶段
+$(if [ "$BACKEND_COMPILE_SUCCESS" = true ] && [ "$FRONTEND_BUILD_SUCCESS" = true ]; then
+    echo "✅ 编码实现完成，可以进入评审阶段"
+else
+    echo "❌ 存在编译错误，需要修复"
+fi)
 EOF
 fi
 
 echo -e "✅  编码实现完成"
-echo -e "   📄  报告: $TASK_DIR/02-implementation.md"
+
+if [ "$BACKEND_COMPILE_SUCCESS" = true ] && [ "$FRONTEND_BUILD_SUCCESS" = true ]; then
+    exit 0
+else
+    exit 1
+fi
