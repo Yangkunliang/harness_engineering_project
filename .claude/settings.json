@@ -1,0 +1,64 @@
+{
+  "agent_info": {
+    "name": "Harness E-commerce Agent",
+    "version": "1.0.0",
+    "description": "企业级电商项目AI助手，基于Harness Engineering架构"
+  },
+  "entry_point": "CLAUDE.md",
+  "knowledge_base": {
+    "rules": [
+      ".harness/rules/编码规范.md",
+      ".harness/rules/开发流程规范.md"
+    ],
+    "wiki": [
+      ".harness/wiki/业务模型.md",
+      ".harness/wiki/接口协议.md",
+      ".harness/wiki/数据模型.md",
+      ".harness/wiki/领域术语.md"
+    ],
+    "changes": [
+      ".harness/changes/summary.md",
+      ".harness/changes/db-migrations.sql",
+      ".harness/changes/rollback.sql"
+    ]
+  },
+  "workflow": {
+    "steps": [
+      {
+        "name": "需求分析",
+        "description": "识别影响范围、冲突检测",
+        "checklist": ["需求清晰", "无冲突", "方案可行"]
+      },
+      {
+        "name": "编码实现",
+        "description": "遵循6步法、自检清单",
+        "checklist": ["符合规范", "无魔法数字", "有空值校验", "有异常处理", "有日志", "有测试"]
+      },
+      {
+        "name": "专家评审",
+        "description": "6维评审、阻断机制",
+        "checklist": ["架构合规", "安全合规", "性能达标", "可维护", "规范合规", "测试充分"]
+      },
+      {
+        "name": "单元测试",
+        "description": "覆盖率≥80%",
+        "checklist": ["整体覆盖率≥80%", "核心模块100%"]
+      },
+      {
+        "name": "CI门禁",
+        "description": "6道关卡",
+        "checklist": ["编译通过", "规范通过", "测试通过", "覆盖率达标", "依赖安全", "安全检查通过"]
+      },
+      {
+        "name": "部署验证",
+        "description": "冒烟+MQ+Redis+性能",
+        "checklist": ["冒烟测试通过", "MQ正常", "Redis正常", "性能达标"]
+      }
+    ]
+  },
+  "constraints": {
+    "max_token": 8192,
+    "timeout": 300,
+    "rate_limit": 100
+  }
+}

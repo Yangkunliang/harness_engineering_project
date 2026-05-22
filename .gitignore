@@ -1,0 +1,29 @@
+# Git (注意: .gitignore 本身需要被 Git 跟踪，不能忽略)
+!.gitignore
+.git/
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
+*.tmp
+*.bak
+*.swp
+
+# Harness (任务目录和变更记录不需要版本控制)
+.harness/tasks/
+.harness/changes/
+
+# Dependencies (由 Dockerfile 管理)
+node_modules/
+
+# Build outputs
+backend/target/
+frontend/dist/
