@@ -6,10 +6,14 @@ const api = axios.create({
   timeout: 10000
 })
 
+const publicPaths = ['/auth/public-key', '/auth/login']
+
 api.interceptors.request.use(
   (config) => {
     const userStore = useUserStore()
-    if (userStore.token) {
+    const isPublicPath = publicPaths.some(path => config.url?.includes(path))
+    
+    if (userStore.token && !isPublicPath) {
       config.headers.Authorization = `Bearer ${userStore.token}`
     }
     return config
