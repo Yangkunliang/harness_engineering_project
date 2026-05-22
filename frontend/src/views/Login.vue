@@ -64,6 +64,10 @@ onMounted(async () => {
   } catch (error) {
     console.error('Failed to load public key:', error)
   }
+  
+  if (userStore.isLoggedIn) {
+    userStore.logout()
+  }
 })
 
 async function handleLogin() {
